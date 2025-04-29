@@ -26,7 +26,7 @@ Aplicación web para la consulta y reserva de planes turísticos en Colombia, de
 
 TourisPlan permite a los usuarios descubrir emocionantes planes turísticos en Colombia, ofrecidos a través de la integración con `api-colombia`. Los usuarios pueden registrarse, autenticarse, explorar los detalles de cada plan y realizar reservas de forma sencilla y segura.
 
-El proyecto se desarrolla siguiendo un enfoque ágil, con integración continua y despliegue continuo (CI/CD) a través de GitHub Actions, e incorpora prácticas de seguridad robustas, incluyendo análisis de vulnerabilidades y evaluación con CVSS 4.0.
+El proyecto se desarrolla siguiendo un enfoque ágil, con integración continua y despliegue continuo (CI/CD) a través de GitHub Actions, e incorpora prácticas de seguridad robustas, incluyendo análisis de vulnerabilidades con GitHub code security y evaluación con CVSS 4.0.
 
 ## Características Principales
 
