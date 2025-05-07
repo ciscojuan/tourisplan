@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-sbom": "npx @cyclonedx/bom -o tourisplan-sbom.json -j"
   },
   "dependencies": {
     "next": "15.3.1",
@@ -15,6 +16,7 @@
     "react-icons": "^5.5.0"
   },
   "devDependencies": {
+    "@cyclonedx/bom": "^4.1.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
