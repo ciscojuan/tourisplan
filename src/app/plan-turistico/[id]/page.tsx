@@ -5,13 +5,15 @@ import React from "react";
 import PlaneImage from "@/components/PlaneImage";
 import { notFound } from "next/navigation";
 
-interface Props {
-  params: { id: string };
-}
+type PageParams = Promise<{ id: string }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: PageParams;
+}): Promise<Metadata> {
   try {
-    const { id } = params;
+    const { id } = await params;
     const planTuristicoData = await getTuristicPlan(id);
     if (!planTuristicoData.ok) {
       return {
@@ -35,14 +37,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function PlanTuristicopage({ params }: Props) {
+export default async function PlanTuristicopage({
+  params,
+}: {
+  params: PageParams;
+}) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const planTuristicoData = await getTuristicPlan(id);
 
-    // Check if the response is OK before trying to parse JSON
     if (!planTuristicoData.ok) {
-      // This will trigger the not-found page
+      console.error(
+        "Error fetching plan:",
+        planTuristicoData.status,
+        planTuristicoData.statusText
+      );
       notFound();
     }
 
