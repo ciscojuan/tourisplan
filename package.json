@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-sbom": "npx @cyclonedx/bom -o tourisplan-sbom.json -j"
+    "generate-sbom": "npx @cyclonedx/cyclonedx-npm --output-file tourisplan-sbom.json"
   },
   "dependencies": {
     "next": "15.3.1",
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@cyclonedx/bom": "^4.1.0",
+    "@cyclonedx/cyclonedx-npm": "^3.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
