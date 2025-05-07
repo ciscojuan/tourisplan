@@ -1,6 +1,7 @@
 import PlaneImage from "@/components/PlaneImage";
 import { PlanTuristico } from "../interfaces";
 import { IoArrowForwardOutline } from "react-icons/io5";
+import Link from "next/link";
 
 interface Props {
   planesTuristicos: PlanTuristico[];
@@ -13,8 +14,10 @@ export const PTuristicosGrid = ({ planesTuristicos }: Props) => {
           ? item.images[0]
           : "";
         return (
-          <div className="flex flex-col items-center text-center max-w-sm  border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8">
-                
+          <div
+            key={item.id}
+            className="flex flex-col items-center text-center max-w-sm  border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8"
+          >
             <PlaneImage
               key={item.id}
               src={imageUrl}
@@ -32,13 +35,13 @@ export const PTuristicosGrid = ({ planesTuristicos }: Props) => {
                   ? `${item.description.substring(0, 100)}...`
                   : item.description || "Sin descripción disponible"}
               </p>
-              <a
-                href="#"
+              <Link
+                href={`/plan-turistico/${item.id}`}
                 className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Ver Plan Turistico
-               <IoArrowForwardOutline className="ml-4"/>
-              </a>
+                <IoArrowForwardOutline className="ml-4" />
+              </Link>
             </div>
           </div>
         );

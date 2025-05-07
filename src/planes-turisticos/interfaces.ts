@@ -15,6 +15,8 @@ export interface PlanTuristico {
   id: number;
   name: string;
   description?: string;
+  latitud: string;
+  longitud: string;
   images: string[];
   city?: City;
   department?: Department;
