@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import React from "react";
 import PlaneImage from "@/components/PlaneImage";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 type PageParams = Promise<{ id: string }>;
 
@@ -84,6 +85,11 @@ export default async function PlanTuristicopage({
               {description || "No hay descripción disponible"}
             </p>
           </div>
+          <Link href="#">
+            <div className="p-4 w-3xs text-center m-4 bg-amber-600 rounded-2xl text-white">
+              Reservar
+            </div>
+          </Link>
         </div>
       </div>
     );
