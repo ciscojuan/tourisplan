@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Image from "next/image";
 import React from "react";
 import { IoAirplaneOutline, IoLogoReact } from "react-icons/io5";
@@ -16,15 +16,15 @@ export const Sidebard = () => {
   return (
     <div
       id="menu"
-      className="bg-gray-900 min-h-screen z-10 text-slate-300 w-[400px] left-0"
+      className="bg-gray-900 min-h-screen z-10 text-slate-300 w-[400px] left-0 border-r-4 border-amber-700"
     >
       <div id="logo" className="my-4 px-6">
         <h1 className="text-lg md:text-2xl font-bold text-white flex items-center">
           <IoLogoReact className="animate-spin duration-2000" />
-          <span className="text-white animate-pulse ml-2">COD_</span>
+          <span className="text-white animate-pulse ml-2">Tourisplan</span>
         </h1>
-        <p className="text-slate-500 text-sm">
-          Manage your actions and activities
+        <p className="text-sm text-center text-amber-600">
+          Realiza tu reserva facil y sencillo sin moverte de tu cama.
         </p>
       </div>
       <div id="profile" className="px-6 py-10">
