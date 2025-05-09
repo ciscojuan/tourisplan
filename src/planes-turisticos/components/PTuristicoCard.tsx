@@ -3,28 +3,14 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { PlanTuristico } from "../interfaces";
 import { IoArrowForwardOutline } from "react-icons/io5";
-import Image from "next/image";
+import PlaneImage from "@/components/PlaneImage";
 
 interface Props {
   planTuristico: PlanTuristico;
 }
 
 export const PTuristicoCard = ({ planTuristico }: Props) => {
-  const DEFAULT_IMAGE =
-    "https://hips.hearstapps.com/hmg-prod/images/macchu-pichu-sunset-royalty-free-image-1663587235.jpg?crop=1xw:1xh;center,top&resize=980:*";
-
-  const [image, setImage] = useState(DEFAULT_IMAGE);
   const { id, images, name, description } = planTuristico;
-
-  useEffect(() => {
-    if (images && images.length > 0 && images[0]?.startsWith("http")) {
-      setImage(images[0]);
-    }
-  }, [images]);
-
-  const handleImageError = () => {
-    setImage(DEFAULT_IMAGE);
-  };
 
   return (
     <div
@@ -32,14 +18,14 @@ export const PTuristicoCard = ({ planTuristico }: Props) => {
       className="flex flex-col items-center text-center max-w-sm  border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8"
     >
       <div className="w-[200px] h-[200px] relative overflow-hidden rounded-lg">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className="object-cover"
-          onError={handleImageError}
-          priority={true}
-        />
+        <div className="mb-6">
+          <PlaneImage
+            src={images[0].startsWith("http") ? images[0] : ""}
+            alt={name}
+            width={800}
+            height={400}
+          />
+        </div>
       </div>
 
       <div className="p-5 flex flex-col items-center">
