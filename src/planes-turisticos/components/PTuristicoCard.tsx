@@ -15,7 +15,7 @@ export const PTuristicoCard = ({ planTuristico }: Props) => {
   return (
     <div
       key={id}
-      className="flex flex-col items-center text-center max-w-sm  border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8"
+      className="flex flex-col items-center text-center max-w-sm  border border-amber-600 rounded-lg shadow-sm dark:bg-amber-600 p-8"
     >
       <div className="w-[200px] h-[200px] relative overflow-hidden rounded-lg">
         <div className="mb-6">
@@ -39,7 +39,7 @@ export const PTuristicoCard = ({ planTuristico }: Props) => {
         </p>
         <Link
           href={`/plan-turistico/${id}`}
-          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-amber-600 focus:ring-4 focus:outline-none "
         >
           Ver Plan Turistico
           <IoArrowForwardOutline className="ml-4" />
