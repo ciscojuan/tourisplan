@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import { IoAirplaneOutline, IoLogoReact } from "react-icons/io5";
 import { SideBarMenuItem } from "./SideBarMenuItem";
+import { ButtonComponent } from "./ButtonComponent";
 
 export const Sidebard = () => {
   const menuItems = [
@@ -49,6 +50,7 @@ export const Sidebard = () => {
           <SideBarMenuItem key={index} {...item} />
         ))}
       </div>
+      <ButtonComponent title="Ingresar" path="/login" />
     </div>
   );
 };
