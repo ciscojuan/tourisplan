@@ -1,1 +1,2 @@
-export { Sidebard } from './Sidebard'
+export { Sidebard } from "./Sidebard";
+export { ButtonComponent } from "./ButtonComponent";
