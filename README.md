@@ -26,7 +26,7 @@ Aplicación web para la consulta y reserva de planes turísticos en Colombia, de
 
 TourisPlan permite a los usuarios descubrir emocionantes planes turísticos en Colombia, ofrecidos a través de la integración con `api-colombia`. Los usuarios pueden registrarse, autenticarse, explorar los detalles de cada plan y realizar reservas de forma sencilla y segura.
 
-El proyecto se desarrolla siguiendo un enfoque ágil, con integración continua y despliegue continuo (CI/CD) a través de GitHub Actions, e incorpora prácticas de seguridad robustas, incluyendo análisis de vulnerabilidades y evaluación con CVSS 4.0.
+El proyecto se desarrolla siguiendo un enfoque ágil, con integración continua y despliegue continuo (CI/CD) a través de GitHub Actions, e incorpora prácticas de seguridad robustas, incluyendo análisis de vulnerabilidades con GitHub code security y evaluación con CVSS 4.0.
 
 ## Características Principales
 
@@ -56,7 +56,7 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 
 ### Pre-requisitos
 
-* [Node.js](https://nodejs.org/) (Versión LTS recomendada,  `package.json`.
+* [Node.js](https://nodejs.org/) (Versión LTS recomendada),  `package.json`.
 * [npm](https://www.npmjs.com/)
 * [Docker](https://www.docker.com/products/docker-desktop/) y [Docker Compose](https://docs.docker.com/compose/install/) (Recomendado para un entorno consistente)
 * Acceso a la base de datos externa y credenciales.
@@ -91,4 +91,71 @@ NEXTAUTH_URL="http://localhost:3000" # Cambiar en producción
 # Configuración de Proveedores OAuth (si usas Google, GitHub, etc.)
 # GOOGLE_CLIENT_ID="..."
 # GOOGLE_CLIENT_SECRET="..."
+```
 
+### Ejecutar en Desarrollo
+
+```bash
+npm run dev
+```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
+
+## Ejecutar con Docker
+
+Para ejecutar la aplicación con Docker:
+
+```bash
+# Construir la imagen
+docker build -t tourisplan .
+
+# Ejecutar el contenedor
+docker run -p 3000:3000 tourisplan
+```
+
+O con Docker Compose:
+
+```bash
+docker-compose up
+```
+
+## Ejecutar Pruebas
+
+```bash
+# Ejecutar pruebas unitarias
+npm test
+
+# Ejecutar pruebas con cobertura
+npm run test:coverage
+```
+
+## Construcción para Producción
+
+```bash
+npm run build
+```
+
+## CI/CD
+
+Este proyecto utiliza GitHub Actions para CI/CD. Los flujos de trabajo incluyen:
+
+* Pruebas automatizadas en cada Pull Request
+* Análisis de seguridad y calidad de código
+* Despliegue automático a entornos de staging y producción
+
+## Seguridad
+
+* Implementación de HTTPS
+* Protección contra ataques comunes (XSS, CSRF, etc.)
+* Análisis de vulnerabilidades con GitHub code security
+* Evaluación de riesgos con CVSS 4.0
+
+## Documentación Adicional
+
+* [API Documentation](./docs/api.md)
+* [Database Schema](./docs/database.md)
+* [Deployment Guide](./docs/deployment.md)
+
+## Licencia
+
+Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
