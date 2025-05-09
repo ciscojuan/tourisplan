@@ -1,14 +1,8 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import Image from "next/image";
-import {
-  IoAirplaneOutline,
-  IoLogInOutline,
-  IoLogOutOutline,
-  IoPersonOutline,
-} from "react-icons/io5";
+import { IoAirplaneOutline, IoPersonOutline } from "react-icons/io5";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { signOut, signIn } from "next-auth/react";
 
 import { SideBarMenuItem } from "./SideBarMenuItem";
 import { SignInButton, SignOutButton } from "./AuthButton";
