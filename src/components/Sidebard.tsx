@@ -23,7 +23,7 @@ export const Sidebard = () => {
           <IoLogoReact className="animate-spin duration-2000" />
           <span className="text-white animate-pulse ml-2">Tourisplan</span>
         </h1>
-        <p className="text-slate-500 text-sm text-center">
+        <p className="text-sm text-center text-amber-600">
           Realiza tu reserva facil y sencillo sin moverte de tu cama.
         </p>
       </div>
