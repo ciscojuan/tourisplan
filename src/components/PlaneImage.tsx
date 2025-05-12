@@ -25,7 +25,7 @@ export default function PlaneImage({
         className="object-cover"
         onError={() =>
           setImgSrc(
-            "https://hips.hearstapps.com/hmg-prod/images/macchu-pichu-sunset-royalty-free-image-1663587235.jpg?crop=1xw:1xh;center,top&resize=980:*"
+            "https://hips.hearstapps.com/hmg-prod/images/macchu-pichu-sunset-royalty-free-image-1663587235.jpg?crop=1xw:1xh;center,top&resize=980"
           )
         }
       />

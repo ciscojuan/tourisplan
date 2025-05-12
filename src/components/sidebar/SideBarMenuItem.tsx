@@ -15,11 +15,10 @@ export const SideBarMenuItem = ({ path, icon, title, subtitle }: Props) => {
   return (
     <Link
       href={path}
-      className={`w-full px-2 inline-flex space-x-2 items-center border-b border-slate-700 py-2 hover:bg-amber-600 transition ease-linear duration-150 rounded-2xl mb-2 ${
+      className={`w-full px-2 inline-flex space-x-2 justify-evenly items-center  border-slate-700 py-2 hover:bg-amber-600 transition ease-linear duration-150 rounded-xl mb-2 ${
         currentPath === path && "bg-white/9"
       } `}
     >
-      <div>{icon}</div>
       <div className="flex flex-col">
         <span className="text-md font-bold leading-5 text-white text-center">
           {title}
@@ -28,6 +27,7 @@ export const SideBarMenuItem = ({ path, icon, title, subtitle }: Props) => {
           {subtitle}
         </span>
       </div>
+      <span>{icon}</span>
     </Link>
   );
 };
