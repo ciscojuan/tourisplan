@@ -85,34 +85,53 @@ NEXTAUTH_URL="http://localhost:3000" # Cambiar en producción
 
 1.  **Clona el repositorio:**
 
-    ```bash
-    git clone https://github.com/tu-usuario/tourisplan.git
-    cd tourisplan
-    ```
+```bash
+git clone https://github.com/tu-usuario/tourisplan.git
+cd tourisplan
+```
 
 2.  **Instala los módulos necesarios de node:**
-    ```bash
-    npm install
-    ```
-3.  **Hacer migracion de prisma:**
 
-```
-npx prisma migrate dev
+```bash
+npm install
 ```
 
-4.  **generar el cliente**
+3. **Configura la base de datos Postgresql con Docker**
 
+```bash
+# Inicia el contenedor de PostgreSQL
+docker-compose up -d
 ```
+
+4. **Configura Prisma y la base de datos**
+
+```bash
+# Crea las tablas en la base de datos y genera el cliente de Prisma
+npx prisma migrate dev --name init
+```
+
+5. **generar el cliente**
+
+```bash
 npx prisma generate
 ```
 
 ### Ejecutar proyecto en desarrollo
 
+1. **Asegurarce de que el contenedor de PostgreSQL esta en ejecucion:**
+
+```bash
+docker-compose ps
+```
+
+2. **Inicia el servidor de desarrollo:**
+
 ```bash
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
+3. **Acceder a la Aplicación:**
+   Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 
 ## Ejecutar con Docker
 
