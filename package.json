@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-sbom": "npx @cyclonedx/cyclonedx-npm --output-file tourisplan-sbom.json"
+    "generate-sbom": "NODE_OPTIONS='--no-experimental-fetch' npx @cyclonedx/cyclonedx-npm --output-file tourisplan-sbom.json --no-xml"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.9.1",
     "@prisma/client": "^6.7.0",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
@@ -28,5 +29,8 @@
     "eslint-config-next": "^15.3.2",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "libxmljs2": false
   }
 }
