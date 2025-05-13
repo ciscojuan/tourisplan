@@ -11,13 +11,17 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(uuid())
   name          String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
+  password      String?
   image         String?
+  roles         String[]  @default(["user"])
+  isActive      Boolean   @default(true)
   accounts      Account[]
   sessions      Session[]
+
   reservas      Reserva[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
@@ -82,27 +86,33 @@ model Authenticator {
 }
 
 model Plan {
-  id          Int       @id @default(autoincrement()) // Changed to primary key with auto-increment
+  id          Int       @id
   nombre_plan String
   image       String
-  reservas    Reserva[] // Added relation to Reserva model
+  descripcion String? // Add description if available
+  precio      Float? // Add price if relevant
+  reservas    Reserva[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("planes") // Explicit table name
+  // Remove User relation - plans shouldn't belong to users
+  // They are independent entities from your API
+
+  @@map("planes")
 }
 
 model Reserva {
   id        String   @id @default(uuid())
-  plan      Plan     @relation(fields: [planId], references: [id])
   planId    Int
   fecha     DateTime @default(now())
   estado    String   @default("pendiente")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  plan Plan @relation(fields: [planId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([planId])

@@ -1,3 +1,3 @@
 export { Sidebard } from "./sidebar/Sidebard";
 export { ButtonComponent } from "./ButtonComponent";
-export { AuthButton } from "./AuthButton";
+export { AuthButton } from "./sidebar/AuthButton";
