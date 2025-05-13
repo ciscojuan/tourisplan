@@ -4,7 +4,7 @@ import { IoAirplaneOutline, IoPersonOutline } from "react-icons/io5";
 import { getServerSession } from "next-auth";
 
 import { SideBarMenuItem } from "./SideBarMenuItem";
-import { AuthButton } from "../AuthButton";
+import { AuthButton } from "./AuthButton";
 
 const avatars: string[] = [
   "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/ECA649992C3ECF9D41FEF7629CAA0E7561824A2F5811140849FCB0C27F8A5266/scale?width=300&aspectRatio=1.00&format=png",
@@ -22,6 +22,7 @@ const avatars: string[] = [
 
 export const Sidebard = async () => {
   const session = await getServerSession(authOptions);
+  const userRole = session?.user?.roles || ["user"];
 
   // Menú para todos los usuarios (autenticados y no autenticados)
   const publicMenuItems = [
@@ -128,7 +129,7 @@ export const Sidebard = async () => {
               />
             </div>
             <h3 className="text-md md:text-base font-bold text-center mb-2">
-              Usuario
+              {userRole.join(",")}
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Información incompleta
@@ -182,7 +183,9 @@ export const Sidebard = async () => {
           <h3 className="text-md md:text-base font-bold text-center mb-2">
             {session.user.name}
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Usuario</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
+            {userRole.join(", ")}
+          </p>
         </div>
       </div>
       <div id="nav" className="w-full px-6">
