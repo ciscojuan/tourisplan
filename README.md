@@ -63,6 +63,27 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 - [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/products/docker-desktop/) y [Docker Compose](https://docs.docker.com/compose/install/) (Recomendado para un entorno consistente)
 
+```markdown
+### Configuración Autenticación OAuth para Google y GitHub Providers
+
+#### Configurar OAuth con Google:
+
+1. Ve a [Google Cloud Console](https://console.cloud.google.com)
+2. Crea un nuevo proyecto o selecciona uno existente
+3. Activa la API de Google+
+4. Ve a "Credentials" -> "Create Credentials" -> "OAuth Client ID"
+5. Configura:
+   - Application Type: Web Application
+   - Authorized redirect URI: http://localhost:3000/api/auth/callback/google
+6. Google te proporcionará:
+   - Client ID
+   - Client Secret
+
+Agrega estas credenciales al archivo .env:
+GOOGLE_CLIENT_ID="tu-client-id"
+GOOGLE_SECRET="tu-gogle-secret"
+```
+
 ### Variables de Entorno
 
 Crea un archivo `.env.local` en la raíz del proyecto y configura las siguientes variables. **Nunca subas este archivo a Git si contiene secretos o maneja secretos en el mismo Github.**
@@ -74,11 +95,10 @@ DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public"
 # Autenticación (NextAuth.js / Auth.js)
 # Genera un secreto seguro con: openssl rand -hex 32
 NEXTAUTH_SECRET="TU_NEXTAUTH_SECRET_AQUI"
-NEXTAUTH_URL="http://localhost:3000" # Cambiar en producción
 
 # Configuración de Proveedores OAuth (si usas Google, GitHub, etc.)
-# GOOGLE_CLIENT_ID="..."
-# GOOGLE_CLIENT_SECRET="..."
+GOOGLE_CLIENT_ID="..."
+GOOGLE_CLIENT_SECRET="..."
 ```
 
 ### Instalación
