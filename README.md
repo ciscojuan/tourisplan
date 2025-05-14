@@ -72,9 +72,9 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 3. Ve a "Credentials" -> "Create Credentials" -> "OAuth Client ID"
 
 - 3.1 Configurar consentimiento
-- configura nombre de la aplicacion, correo.
-- configurar uso usuarios externos
-- usuario de correo -> finalizar
+  - configura nombre de la aplicacion, correo.
+  - configurar uso usuarios externos
+  - usuario de correo -> finalizar
 
 4. Ir a Crear cliente de OAuth, Configura:
    - Application Type: Web Application
