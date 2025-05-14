@@ -6,7 +6,6 @@ import React from "react";
 import PlaneImage from "@/components/PlaneImage";
 import { notFound, redirect } from "next/navigation";
 
-import { ButtonComponent } from "@/components";
 import { IoBook } from "react-icons/io5";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
@@ -65,7 +64,7 @@ export default async function PlanTuristicopage({
 
     const planTuristico: PlanTuristico = await planTuristicoData.json();
     const { name, description, images, city, department } = planTuristico;
-
+    //Server Action para crear plan turistico
     async function createReservation(formData: FormData) {
       "use server";
 
@@ -85,6 +84,7 @@ export default async function PlanTuristicopage({
               id: parseInt(id),
               nombre_plan: name,
               image: images && images.length > 0 ? images[0] : "",
+              descripcion: description,
             },
           });
         }
