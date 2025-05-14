@@ -4,12 +4,14 @@ import Link from "next/link";
 import { PlanTuristico } from "../interfaces";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import PlaneImage from "@/components/PlaneImage";
+import { Reserva } from "@prisma/client";
 
 interface Props {
   planTuristico: PlanTuristico;
+  reserva?: Reserva;
 }
 
-export const PTuristicoCard = ({ planTuristico }: Props) => {
+export const PTuristicoCard = ({ planTuristico, reserva }: Props) => {
   const { id, images, name, description } = planTuristico;
 
   return (
