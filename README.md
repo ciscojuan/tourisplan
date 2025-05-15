@@ -63,7 +63,7 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 - [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/products/docker-desktop/) y [Docker Compose](https://docs.docker.com/compose/install/) (Recomendado para un entorno consistente)
 
-### Configuración Autenticación OAuth para Google y GitHub Providers
+### Creacion de credenciales para Autenticación OAuth para Google y GitHub Providers
 
 #### Configurar OAuth con Google:
 
@@ -83,9 +83,9 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
    - Client ID
    - Client Secret
 
-Agrega estas credenciales al archivo .env:
+Copia las credenciales: **las necesitaremos mas adelante**
 GOOGLE_CLIENT_ID="tu-client-id"
-GOOGLE_SECRET="tu-gogle-secret"
+GOOGLE_SECRET="tu-gogle-secret" **Solo se generará la primera vez. Luego no se pdrá visualizar y tendra que generar otra scret.**
 
 ### Configurar OAuth con GitHub
 
@@ -98,28 +98,26 @@ GOOGLE_SECRET="tu-gogle-secret"
    - Authorization callback URL: http://localhost:3000/api/auth/callback/github **Importante**
 5. GitHub te proporcionará:
    - Client ID
-   - Client Secret **Solo se generará la primera vez. Luego no se pdrá visualizar y tendra que generar otra scret. **
-
-# Agrega estas credenciales al archivo .env:
-
-GITHUB_ID="tu-client-id"
-GITHUB_SECRET="tu-client-secret"
+   - Client Secret **Solo se generará la primera vez. Luego no se pdrá visualizar y tendra que generar otra scret.**
 
 ### Variables de Entorno
 
-Crea un archivo `.env.local` en la raíz del proyecto y configura las siguientes variables. **Nunca subas este archivo a Git si contiene secretos o maneja secretos en el mismo Github.**
+Crea un archivo `.env` en la raíz del proyecto y configura las siguientes variables.
 
 ```bash
-# Base de Datos (Ejemplo para PostgreSQL con Prisma)
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public"
+# Base de Datos
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 
-# Autenticación (NextAuth.js / Auth.js)
+# Autenticación (NextAuth.js)
 # Genera un secreto seguro con: openssl rand -hex 32
 NEXTAUTH_SECRET="TU_NEXTAUTH_SECRET_AQUI"
 
 # Configuración de Proveedores OAuth (si usas Google, GitHub, etc.)
-GOOGLE_CLIENT_ID="..."
-GOOGLE_CLIENT_SECRET="..."
+GITHUB_ID="***"
+GITHUB_SECRET=""
+
+GOOGLE_CLIENT_ID="***"
+GOOGLE_CLIENT_SECRET="***"
 ```
 
 ### Instalación
@@ -127,7 +125,7 @@ GOOGLE_CLIENT_SECRET="..."
 1.  **Clona el repositorio:**
 
 ```bash
-git clone https://github.com/tu-usuario/tourisplan.git
+git clone https://github.com/ciscojuan/tourisplan.git
 cd tourisplan
 ```
 
