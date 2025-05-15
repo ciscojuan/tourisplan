@@ -1,19 +1,19 @@
-name: SAST-SNYK
+name: SAST Snyk Analysis
 
 on:
   workflow_dispatch:
     inputs:
       run_sast:
-        description: "Run SAST with Snyk"
+        description: "Run SAST analysis with Snyk"
         required: true
         default: "true"
+        type: boolean
 
 jobs:
   sast-snyk:
     name: SAST with Snyk
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_sast == 'true'
-
+    if: github.event.inputs.run_sast == 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,11 +32,18 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: test --severity-threshold=high --sarif-file-output=snyk.sarif
+          command: test --severity-threshold=high
           args: --all-projects
 
-      - name: Upload result to GitHub Code Scanning
+      - name: Generate HTML report
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        run: |
+          npm install -g snyk-to-html
+          snyk test --json | snyk-to-html -o snyk-report.html || true
+
+      - name: Upload Snyk report
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
-          sarif_file: snyk.sarif
+          name: snyk-security-report
+          path: snyk-report.html
