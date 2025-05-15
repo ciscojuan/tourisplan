@@ -5,10 +5,11 @@ import { Metadata } from "next";
 import React from "react";
 import PlaneImage from "@/components/PlaneImage";
 import { notFound, redirect } from "next/navigation";
-
-import { IoBook } from "react-icons/io5";
 import { getServerSession } from "next-auth";
+
+import { IoBook, IoLogInSharp } from "react-icons/io5";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { ButtonComponent } from "@/components";
 import { revalidatePath } from "next/cache";
 
 type PageParams = Promise<{ id: string }>;
@@ -50,8 +51,8 @@ export default async function PlanTuristicopage({
 }) {
   try {
     const { id } = await params;
+
     const planTuristicoData = await getTuristicPlan(id);
-    const session = await getServerSession(authOptions);
 
     if (!planTuristicoData.ok) {
       console.error(
@@ -64,16 +65,18 @@ export default async function PlanTuristicopage({
 
     const planTuristico: PlanTuristico = await planTuristicoData.json();
     const { name, description, images, city, department } = planTuristico;
-    //Server Action para crear plan turistico
+
+    // Check if user is logged in
+    const session = await getServerSession(authOptions);
+
+    // Create a server action for reservation
     async function createReservation(formData: FormData) {
       "use server";
 
+      const session = await getServerSession(authOptions);
       if (!session?.user) {
-        throw new Error("Debe iniciar sesión para reservar");
-      }
-
-      try {
-        // First, check if the plan exists in our database, if not create it
+        redirect("/api/auth/signin");
+      } else {
         const existingPlan = await prisma.plan.findUnique({
           where: { id: parseInt(id) },
         });
@@ -100,10 +103,6 @@ export default async function PlanTuristicopage({
 
         revalidatePath("/mis-reservas");
         redirect("/mis-reservas");
-      } catch (error) {
-        console.error("Error creating reservation:", error);
-        // Instead of returning an error object, we could throw an error
-        // or handle it differently
       }
     }
 
@@ -134,20 +133,22 @@ export default async function PlanTuristicopage({
             </p>
           </div>
 
-          <form action={createReservation} className="mt-6">
-            <button
-              type="submit"
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              disabled={!session?.user}
-            >
-              <IoBook /> Reservar
-            </button>
-          </form>
+          {/* Use a form with action instead of onClick */}
 
-          {!session && (
-            <p className="mt-4 text-red-500">
-              Debe iniciar sesión para poder reservar este plan
-            </p>
+          {!session ? (
+            <ButtonComponent
+              path="/api/auth/signin"
+              title="Inicia sesion para reservar"
+              icon={<IoLogInSharp size={30} />}
+            />
+          ) : (
+            <form action={createReservation} className="mt-6">
+              <ButtonComponent
+                title="Reserva"
+                path="/mis-reservas"
+                icon={<IoBook size={30} />}
+              />
+            </form>
           )}
         </div>
       </div>
