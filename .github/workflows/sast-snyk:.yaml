@@ -1,0 +1,42 @@
+name: SAST-SNYK
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_sast:
+        description: "Run SAST with Snyk"
+        required: true
+        default: "true"
+
+jobs:
+  sast-snyk:
+    name: SAST with Snyk
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_sast == 'true'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test --severity-threshold=high --sarif-file-output=snyk.sarif
+          args: --all-projects
+
+      - name: Upload result to GitHub Code Scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
