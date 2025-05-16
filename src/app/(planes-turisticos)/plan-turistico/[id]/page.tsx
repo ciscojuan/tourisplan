@@ -77,32 +77,36 @@ export default async function PlanTuristicopage({
       if (!session?.user) {
         redirect("/api/auth/signin");
       } else {
-        const existingPlan = await prisma.plan.findUnique({
-          where: { id: parseInt(id) },
-        });
+        try {
+          const existingPlan = await prisma.plan.findUnique({
+            where: { id: parseInt(id) },
+          });
 
-        if (!existingPlan) {
-          await prisma.plan.create({
+          if (!existingPlan) {
+            await prisma.plan.create({
+              data: {
+                id: parseInt(id),
+                nombre_plan: name,
+                image: images && images.length > 0 ? images[0] : "",
+                descripcion: description,
+              },
+            });
+          }
+
+          // Create the reservation
+          await prisma.reserva.create({
             data: {
-              id: parseInt(id),
-              nombre_plan: name,
-              image: images && images.length > 0 ? images[0] : "",
-              descripcion: description,
+              planId: parseInt(id),
+              userId: session.user.id as string,
+              estado: "pendiente",
             },
           });
+
+          revalidatePath("/mis-reservas");
+          redirect("/mis-reservas");
+        } catch (err) {
+          console.log(err);
         }
-
-        // Create the reservation
-        await prisma.reserva.create({
-          data: {
-            planId: parseInt(id),
-            userId: session.user.id as string,
-            estado: "pendiente",
-          },
-        });
-
-        revalidatePath("/mis-reservas");
-        redirect("/mis-reservas");
       }
     }
 
@@ -143,11 +147,12 @@ export default async function PlanTuristicopage({
             />
           ) : (
             <form action={createReservation} className="mt-6">
-              <ButtonComponent
-                title="Reserva"
-                path="/mis-reservas"
-                icon={<IoBook size={30} />}
-              />
+              <button
+                type="submit"
+                className="p-4 text-center my-4 bg-amber-600 rounded-2xl text-white flex justify-evenly items-center gap-6 cursor-pointer transition-transform hover:scale-105 "
+              >
+                <IoBook size={30} /> Reserva
+              </button>
             </form>
           )}
         </div>
