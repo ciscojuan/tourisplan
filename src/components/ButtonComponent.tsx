@@ -11,7 +11,7 @@ interface Props {
 export const ButtonComponent = ({ path, title, icon }: Props) => {
   return (
     <Link href={path}>
-      <div className="p-4 w-3xs text-center my-4 bg-amber-600 rounded-2xl text-white flex justify-evenly items-center">
+      <div className="p-4 w-3xs text-center my-4 bg-amber-600 rounded-2xl text-white flex justify-evenly items-center transition-transform hover:scale-105">
         {title}
         <span>{icon}</span>
       </div>
