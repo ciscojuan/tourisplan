@@ -1,12 +1,16 @@
 name: SAST Snyk Analysis
 
+permissions:
+  contents: read
+  actions: read
+
 on:
   workflow_dispatch:
     inputs:
       run_sast:
         description: "Run SAST analysis with Snyk"
         required: true
-        default: "true"
+        default: true
         type: boolean
 
 jobs:
