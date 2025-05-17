@@ -19,8 +19,8 @@ export const PTuristicoCard = ({ planTuristico, reserva }: Props) => {
       key={id}
       className="flex flex-col items-center text-center max-w-sm  border border-amber-600 rounded-lg shadow-sm dark:bg-amber-600 p-8"
     >
-      <div className="w-[200px] h-[200px] relative overflow-hidden rounded-lg">
-        <div className="mb-6">
+      <div className="w-[150px] h-[150px] relative overflow-hidden rounded-lg">
+        <div className="mb-3">
           <PlaneImage
             src={images[0].startsWith("http") ? images[0] : ""}
             alt={name}
