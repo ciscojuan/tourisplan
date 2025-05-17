@@ -37,7 +37,7 @@ export default function ReservasPage() {
   }, []);
 
   if (!session) redirect("api/auth/signin");
-
+  console.log(reservas);
   return (
     <div className=" justify-center items-center">
       <h1 className="text-5xl text-center">Mis Reservas</h1>
@@ -51,8 +51,8 @@ export default function ReservasPage() {
               <div className="mb-6">
                 <PlaneImage
                   src={
-                    reserva.plan.image[0].startsWith("http")
-                      ? reserva.plan?.image[0]
+                    reserva.plan.image && reserva.plan.image.startsWith("http")
+                      ? reserva.plan.image
                       : ""
                   }
                   alt={reserva.plan.nombre_plan}

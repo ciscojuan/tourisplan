@@ -1,16 +1,18 @@
 import prisma from "@/lib/prisma";
 import { PlanTuristico } from "@/planes-turisticos/interfaces";
-import { getTuristicPlan } from "@/utils/queries";
 import { Metadata } from "next";
-import React from "react";
-import PlaneImage from "@/components/PlaneImage";
 import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-
 import { IoBook, IoLogInSharp } from "react-icons/io5";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import { ButtonComponent } from "@/components";
 import { revalidatePath } from "next/cache";
+import createDOMPurify from "isomorphic-dompurify";
+import { encode } from "html-entities";
+import sanitizeHtml from "sanitize-html";
+
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { getTuristicPlan } from "@/utils/queries";
+import PlaneImage from "@/components/PlaneImage";
+import { ButtonComponent } from "@/components";
 
 type PageParams = Promise<{ id: string }>;
 
@@ -28,7 +30,20 @@ export async function generateMetadata({
         description: "El plan turístico solicitado no existe",
       };
     }
-    const planTuristico: PlanTuristico = await planTuristicoData.json();
+    const planTuristicoRaw: PlanTuristico = await planTuristicoData.json();
+    const planTuristico = {
+      ...planTuristicoRaw,
+      name: encode(createDOMPurify.sanitize(planTuristicoRaw.name)),
+      description: encode(
+        createDOMPurify.sanitize(planTuristicoRaw.description || "")
+      ),
+      city: {
+        ...planTuristicoRaw.city,
+        name: encode(
+          createDOMPurify.sanitize(planTuristicoRaw.city?.name || "")
+        ),
+      },
+    };
 
     return {
       title: `${planTuristico.name}`,
@@ -63,50 +78,82 @@ export default async function PlanTuristicopage({
       notFound();
     }
 
-    const planTuristico: PlanTuristico = await planTuristicoData.json();
+    // Sanitize the JSON data to prevent XSS attacks
+    const planTuristico: PlanTuristico = JSON.parse(
+      sanitizeHtml(JSON.stringify(await planTuristicoData.json()))
+    );
     const { name, description, images, city, department } = planTuristico;
 
     // Check if user is logged in
     const session = await getServerSession(authOptions);
 
     // Create a server action for reservation
+    // For the createReservation server action:
     async function createReservation(formData: FormData) {
       "use server";
 
-      const session = await getServerSession(authOptions);
-      if (!session?.user) {
-        redirect("/api/auth/signin");
-      } else {
-        try {
-          const existingPlan = await prisma.plan.findUnique({
-            where: { id: parseInt(id) },
+      try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user) {
+          redirect("/api/auth/signin");
+        }
+
+        // Validate ID
+        const planId = parseInt(id);
+        if (isNaN(planId)) {
+          throw new Error("Invalid plan ID format");
+        }
+
+        // Use a transaction to prevent race conditions
+        await prisma.$transaction(async (tx) => {
+          const existingPlan = await tx.plan.findUnique({
+            where: { id: planId },
           });
 
           if (!existingPlan) {
-            await prisma.plan.create({
+            // Validate required data
+            if (!name) throw new Error("Plan name is required");
+
+            // Safely access image URL
+            const imageUrl =
+              images &&
+              images.length > 0 &&
+              typeof images[0] === "string" &&
+              images[0].startsWith("http")
+                ? images[0]
+                : "";
+
+            await tx.plan.create({
               data: {
-                id: parseInt(id),
+                id: planId,
                 nombre_plan: name,
-                image: images && images.length > 0 ? images[0] : "",
-                descripcion: description,
+                image: imageUrl,
+                descripcion: description || "",
               },
             });
           }
 
           // Create the reservation
-          await prisma.reserva.create({
+          await tx.reserva.create({
             data: {
-              planId: parseInt(id),
-              userId: session.user.id as string,
+              planId: planId,
+              userId: session.user?.id as string,
               estado: "pendiente",
             },
           });
+        });
 
-          revalidatePath("/mis-reservas");
-          redirect("/mis-reservas");
-        } catch (err) {
-          console.log(err);
-        }
+        revalidatePath("/mis-reservas");
+        redirect("/mis-reservas");
+      } catch (err) {
+        // Improved error logging
+        console.error("Reservation creation failed:", err);
+
+        // Here you would typically return an error status
+        // Since this is a server action, you might want to use a pattern
+        // where you return { success: false, error: message }
+        // and handle it in the UI
+        throw err; // Re-throw to be handled by error boundary
       }
     }
 
@@ -114,16 +161,21 @@ export default async function PlanTuristicopage({
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-6">{name}</h1>
-          {images && images.length > 0 && (
+          {images && Array.isArray(images) && images.length > 0 && (
             <div className="mb-6">
               <PlaneImage
-                src={images[0].startsWith("http") ? images[0] : ""}
-                alt={name}
+                src={
+                  typeof images[0] === "string" && images[0].startsWith("http")
+                    ? images[0]
+                    : ""
+                }
+                alt={name || "Plan turístico"}
                 width={800}
                 height={400}
               />
             </div>
           )}
+
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-semibold mb-4">Ubicación</h2>
             <div className="text-gray-600 dark:text-gray-300 mb-6">
