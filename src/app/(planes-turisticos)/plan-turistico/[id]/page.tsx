@@ -98,8 +98,8 @@ export default async function PlanTuristicopage({
           redirect("/api/auth/signin");
         }
 
-        // Validate ID
-        const planId = parseInt(id);
+        // Obtener el ID del plan desde formData o pasarlo como parámetro
+        const planId = parseInt(formData.get("planId") as string);
         if (isNaN(planId)) {
           throw new Error("Invalid plan ID format");
         }
@@ -199,6 +199,7 @@ export default async function PlanTuristicopage({
             />
           ) : (
             <form action={createReservation} className="mt-6">
+              <input type="hidden" name="planId" value={id} />
               <button
                 type="submit"
                 className="p-4 text-center my-4 bg-amber-600 rounded-2xl text-white flex justify-evenly items-center gap-6 cursor-pointer transition-transform hover:scale-105 "
