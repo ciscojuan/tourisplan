@@ -51,8 +51,8 @@ export default function ReservasPage() {
               <div className="mb-6">
                 <PlaneImage
                   src={
-                    reserva.plan.image[0].startsWith("http")
-                      ? reserva.plan?.image[0]
+                    reserva.plan.image && reserva.plan.image.startsWith("http")
+                      ? reserva.plan.image
                       : ""
                   }
                   alt={reserva.plan.nombre_plan}
