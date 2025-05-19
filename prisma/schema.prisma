@@ -86,7 +86,7 @@ model Authenticator {
 }
 
 model Plan {
-  id          Int       @id
+  id          String    @id @default(uuid())
   nombre_plan String
   image       String
   descripcion String? // Add description if available
@@ -104,7 +104,7 @@ model Plan {
 
 model Reserva {
   id        String   @id @default(uuid())
-  planId    Int
+  planId    String
   fecha     DateTime @default(now())
   estado    String   @default("pendiente")
   userId    String

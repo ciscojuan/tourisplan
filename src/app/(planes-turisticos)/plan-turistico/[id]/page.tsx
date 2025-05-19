@@ -10,9 +10,10 @@ import { encode } from "html-entities";
 import sanitizeHtml from "sanitize-html";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import { getTuristicPlan } from "@/utils/queries";
+import { getTturisticPlanById, getTuristicPlan } from "@/utils/queries";
 import PlaneImage from "@/components/PlaneImage";
 import { ButtonComponent } from "@/components";
+import { randomUUID } from "crypto";
 
 type PageParams = Promise<{ id: string }>;
 
@@ -67,29 +68,50 @@ export default async function PlanTuristicopage({
   try {
     const { id } = await params;
 
-    const planTuristicoData = await getTuristicPlan(id);
+    let planTuristico;
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-    if (!planTuristicoData.ok) {
-      console.error(
-        "Error fetching plan:",
-        planTuristicoData.status,
-        planTuristicoData.statusText
-      );
-      notFound();
+    if (!uuidRegex.test(id)) {
+      const response = await getTuristicPlan(id);
+      if (!response.ok) {
+        console.error(
+          "Error fetching plan:",
+          response.status,
+          response.statusText
+        );
+        notFound();
+      }
+      planTuristico = await response.json();
+    } else {
+      const result = await getTturisticPlanById(id);
+      if (!result) {
+        console.error("Plan not found with ID:", id);
+        notFound();
+      }
+
+      // Adaptar la estructura del resultado de Prisma al formato esperado de PlanTuristico
+      planTuristico = {
+        id: result.id,
+        name: result.nombre_plan,
+        description: result.descripcion,
+        images: result.image ? [result.image] : [],
+        // Proporcionar valores predeterminados para city y department si no existen
+        city: { name: "No disponible" },
+        department: { name: "No disponible" },
+      };
     }
 
-    // Sanitize the JSON data to prevent XSS attacks
-    const planTuristico: PlanTuristico = JSON.parse(
-      sanitizeHtml(JSON.stringify(await planTuristicoData.json()))
-    );
+    // Sanitize the data to prevent XSS attacks
+    planTuristico = JSON.parse(sanitizeHtml(JSON.stringify(planTuristico)));
+
     const { name, description, images, city, department } = planTuristico;
 
     // Check if user is logged in
     const session = await getServerSession(authOptions);
 
     // Create a server action for reservation
-    // For the createReservation server action:
-    async function createReservation(formData: FormData) {
+    async function createPlan(formData: FormData) {
       "use server";
 
       try {
@@ -98,62 +120,42 @@ export default async function PlanTuristicopage({
           redirect("/api/auth/signin");
         }
 
-        // Obtener el ID del plan desde formData o pasarlo como parámetro
-        const planId = parseInt(formData.get("planId") as string);
-        if (isNaN(planId)) {
-          throw new Error("Invalid plan ID format");
-        }
+        // Generar un ID único para el plan
+        const planId = randomUUID();
 
-        // Use a transaction to prevent race conditions
-        await prisma.$transaction(async (tx) => {
-          const existingPlan = await tx.plan.findUnique({
-            where: { id: planId },
-          });
+        // Safely access image URL
+        const imageUrl =
+          images &&
+          images.length > 0 &&
+          typeof images[0] === "string" &&
+          images[0].startsWith("http")
+            ? images[0]
+            : "";
 
-          if (!existingPlan) {
-            // Validate required data
-            if (!name) throw new Error("Plan name is required");
+        // Crear el plan con el ID generado
+        await prisma.plan.create({
+          data: {
+            id: planId,
+            nombre_plan: name,
+            image: imageUrl,
+            descripcion: description || "",
+          },
+        });
 
-            // Safely access image URL
-            const imageUrl =
-              images &&
-              images.length > 0 &&
-              typeof images[0] === "string" &&
-              images[0].startsWith("http")
-                ? images[0]
-                : "";
-
-            await tx.plan.create({
-              data: {
-                id: planId,
-                nombre_plan: name,
-                image: imageUrl,
-                descripcion: description || "",
-              },
-            });
-          }
-
-          // Create the reservation
-          await tx.reserva.create({
-            data: {
-              planId: planId,
-              userId: session.user?.id as string,
-              estado: "pendiente",
-            },
-          });
+        // Crear la reserva con el mismo ID del plan
+        await prisma.reserva.create({
+          data: {
+            planId: planId,
+            userId: session.user.id as string,
+            estado: "pendiente",
+          },
         });
 
         revalidatePath("/mis-reservas");
         redirect("/mis-reservas");
       } catch (err) {
-        // Improved error logging
         console.error("Reservation creation failed:", err);
-
-        // Here you would typically return an error status
-        // Since this is a server action, you might want to use a pattern
-        // where you return { success: false, error: message }
-        // and handle it in the UI
-        throw err; // Re-throw to be handled by error boundary
+        throw err;
       }
     }
 
@@ -198,7 +200,7 @@ export default async function PlanTuristicopage({
               icon={<IoLogInSharp size={30} />}
             />
           ) : (
-            <form action={createReservation} className="mt-6">
+            <form action={createPlan} className="mt-6">
               <input type="hidden" name="planId" value={id} />
               <button
                 type="submit"
