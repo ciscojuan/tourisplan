@@ -42,49 +42,58 @@ export default function ReservasPage() {
     <div className=" justify-center items-center">
       <h1 className="text-5xl text-center">Mis Reservas</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-        {reservas.map((reserva) => (
-          <div
-            key={reserva.id}
-            className="flex flex-col items-center text-center max-w-sm  border border-amber-600 rounded-lg shadow-sm dark:bg-amber-600 p-8"
-          >
-            <div className="w-[200px] h-[200px] relative overflow-hidden rounded-lg">
-              <div className="mb-6">
-                <PlaneImage
-                  src={
-                    reserva.plan.image && reserva.plan.image.startsWith("http")
-                      ? reserva.plan.image
-                      : ""
-                  }
-                  alt={reserva.plan.nombre_plan}
-                  width={800}
-                  height={400}
-                />
+        {reservas.length > 0 ? (
+          reservas.map((reserva) => (
+            <div
+              key={reserva.id}
+              className="flex flex-col items-center text-center max-w-sm  border border-amber-600 rounded-lg shadow-sm dark:bg-amber-600 p-8"
+            >
+              <div className="w-[200px] h-[200px] relative overflow-hidden rounded-lg">
+                <div className="mb-6">
+                  <PlaneImage
+                    src={
+                      reserva.plan.image &&
+                      reserva.plan.image.startsWith("http")
+                        ? reserva.plan.image
+                        : ""
+                    }
+                    alt={reserva.plan.nombre_plan}
+                    width={800}
+                    height={400}
+                  />
+                </div>
+              </div>
+
+              <div className="p-5 flex flex-col items-center">
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {reserva.plan.nombre_plan}
+                </h5>
+                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                  {reserva.plan.descripcion &&
+                  reserva.plan.descripcion.length > 100
+                    ? `${reserva.plan.descripcion.substring(0, 100)}...`
+                    : reserva.plan.descripcion || "Sin descripción disponible"}
+                </p>
+                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                  Nombre: {reserva.user.name}
+                </p>
+                <Link
+                  href={`/plan-turistico/${reserva.plan.id}`}
+                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-amber-600 focus:ring-4 focus:outline-none "
+                >
+                  Ver Plan Turistico
+                  <IoArrowForwardOutline className="ml-4" />
+                </Link>
               </div>
             </div>
-
-            <div className="p-5 flex flex-col items-center">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {reserva.plan.nombre_plan}
-              </h5>
-              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                {reserva.plan.descripcion &&
-                reserva.plan.descripcion.length > 100
-                  ? `${reserva.plan.descripcion.substring(0, 100)}...`
-                  : reserva.plan.descripcion || "Sin descripción disponible"}
-              </p>
-              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                Nombre: {reserva.user.name}
-              </p>
-              <Link
-                href={`/plan-turistico/${reserva.plan.id}`}
-                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-amber-600 focus:ring-4 focus:outline-none "
-              >
-                Ver Plan Turistico
-                <IoArrowForwardOutline className="ml-4" />
-              </Link>
-            </div>
+          ))
+        ) : (
+          <div className="flex w-full">
+            <h1 className="text-2xl text-center">
+              No has realizado ninguna Reserva
+            </h1>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

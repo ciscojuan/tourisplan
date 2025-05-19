@@ -6,7 +6,15 @@ export const getTuristicPlans = async () => {
 };
 
 export const getTuristicPlan = async (id: string) => {
+  const data = await fetch(`${url}/TouristicAttraction/${id}`);
+  return data;
+};
 
-    const data = await fetch(`${url}/TouristicAttraction/${id}`)
-    return data
-}
+export const getTturisticPlanById = async (id: string) => {
+  const PlanTuristico = await prisma?.plan.findFirst({
+    where: {
+      id: id,
+    },
+  });
+  return PlanTuristico;
+};

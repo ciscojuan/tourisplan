@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import prisma from "@/lib/prisma";
+import sanitizeHtml from "sanitize-html";
 import { withAuthorization } from "@/auth/middlewares/auth";
 
 export const GET = async () => {
