@@ -178,6 +178,13 @@ npm run dev
 
 Para ejecutar la aplicación completa (frontend y base de datos) con Docker Compose:
 
+1.  **Clona el repositorio:**
+
+```bash
+git clone https://github.com/ciscojuan/tourisplan.git
+cd tourisplan
+```
+
 ```bash
 # Construir las imágenes y ejecutar los contenedores
 docker-compose up -d
