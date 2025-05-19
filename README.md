@@ -85,7 +85,7 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 
 Copia las credenciales: **las necesitaremos mas adelante**
 GOOGLE_CLIENT_ID="tu-client-id"
-GOOGLE_SECRET="tu-gogle-secret" **Solo se generará la primera vez. Luego no se pdrá visualizar y tendra que generar otra scret.**
+GOOGLE_SECRET="tu-google-secret" **Solo se generará la primera vez. Luego no se pdrá visualizar y tendra que generar otra secret.**
 
 ### Configurar OAuth con GitHub
 
@@ -98,7 +98,7 @@ GOOGLE_SECRET="tu-gogle-secret" **Solo se generará la primera vez. Luego no se 
    - Authorization callback URL: http://localhost:3000/api/auth/callback/github **Importante**
 5. GitHub te proporcionará:
    - Client ID
-   - Client Secret **Solo se generará la primera vez. Luego no se pdrá visualizar y tendra que generar otra scret.**
+   - Client Secret **Solo se generará la primera vez. Luego no se podrá visualizar y tendra que generar otra secret.**
 
 ### Variables de Entorno
 
@@ -157,7 +157,7 @@ npx prisma generate
 
 ### Ejecutar proyecto en desarrollo
 
-1. **Asegurarce de que el contenedor de PostgreSQL esta en ejecucion:**
+1. **Asegurarse de que el contenedor de PostgreSQL esta en ejecucion:**
 
 ```bash
 docker-compose ps
@@ -174,21 +174,19 @@ npm run dev
 
 ## Ejecutar con Docker
 
-Para ejecutar la aplicación con Docker:
+### Construir y ejecutar con docker-compose
+
+Para ejecutar la aplicación completa (frontend y base de datos) con Docker Compose:
 
 ```bash
-# Construir la imagen
-docker build -t tourisplan .
+# Construir las imágenes y ejecutar los contenedores
+docker-compose up -d
 
-# Ejecutar el contenedor
-docker run -p 3000:3000 tourisplan
-```
+# Aplicar migraciones de Prisma
+docker exec tourisplan_app npx prisma migrate deploy
 
-O con Docker Compose:
-
-```bash
-docker-compose up
-```
+**Acceder a la Aplicación:**
+   Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 
 ## CI/CD
 
@@ -213,3 +211,4 @@ Este proyecto utiliza GitHub Actions para CI/CD. Los flujos de trabajo incluyen:
 ## Licencia
 
 Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
+```

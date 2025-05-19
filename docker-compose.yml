@@ -1,17 +1,44 @@
-version: '3.8'
+version: "3.8"
 services:
   postgres:
     image: postgres:14
     container_name: tourisplan_postgres
     restart: always
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=tourisplan
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - tourisplan-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tourisplan_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/tourisplan
+      - NEXTAUTH_SECRET=766ed3deb91f7702b22f2fd473c3377965bc2db530ab901f970ca89f89f82367
+      - NEXTAUTH_URL=http://localhost:3000
+      - GOOGLE_ID=110403919015-3qc4asjp6hqvuf8vrpbgv8smpme65ujr.apps.googleusercontent.com
+      - GOOGLE_SECRET=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
+      - NOGITHUB_ID=Ov23liht5gB3zhrCTb7T
+      - NOGITHUB_SECRET=6e43715aecc153562710141828ea824181700de6
+    depends_on:
+      - postgres
+    networks:
+      - tourisplan-network
+
+networks:
+  tourisplan-network:
+    driver: bridge
 
 volumes:
   postgres_data:
