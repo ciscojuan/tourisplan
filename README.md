@@ -178,14 +178,23 @@ npm run dev
 
 Para ejecutar la aplicación completa (frontend y base de datos) con Docker Compose:
 
+1.  **Clona el repositorio:**
+
+```bash
+git clone https://github.com/ciscojuan/tourisplan.git
+cd tourisplan
+```
+
 ```bash
 # Construir las imágenes y ejecutar los contenedores
 docker-compose up -d
 ```
 
-# Aplicar migraciones de Prisma
+### Aplicar migraciones de Prisma
 
+```bash
 docker exec tourisplan_app npx prisma migrate deploy
+```
 
 **Acceder a la Aplicación:**
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
