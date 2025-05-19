@@ -1,17 +1,38 @@
-version: '3.8'
+version: "3.8"
 services:
   postgres:
     image: postgres:14
     container_name: tourisplan_postgres
     restart: always
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=tourisplan
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - tourisplan-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tourisplan_app
+    restart: always
+    ports:
+      - "3000:3000"
+    # Las variables de entorno ahora se manejan a través de GitHub Secrets
+    # y se inyectan automáticamente durante el despliegue
+    depends_on:
+      - postgres
+    networks:
+      - tourisplan-network
+
+networks:
+  tourisplan-network:
+    driver: bridge
 
 volumes:
   postgres_data:
