@@ -183,9 +183,11 @@ Para ejecutar la aplicación completa (frontend y base de datos) con Docker Comp
 docker-compose up -d
 ```
 
-# Aplicar migraciones de Prisma
+### Aplicar migraciones de Prisma
 
+```bash
 docker exec tourisplan_app npx prisma migrate deploy
+```
 
 **Acceder a la Aplicación:**
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
