@@ -181,12 +181,14 @@ Para ejecutar la aplicación completa (frontend y base de datos) con Docker Comp
 ```bash
 # Construir las imágenes y ejecutar los contenedores
 docker-compose up -d
+```
 
 # Aplicar migraciones de Prisma
+
 docker exec tourisplan_app npx prisma migrate deploy
 
 **Acceder a la Aplicación:**
-   Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 
 ## CI/CD
 
@@ -211,4 +213,7 @@ Este proyecto utiliza GitHub Actions para CI/CD. Los flujos de trabajo incluyen:
 ## Licencia
 
 Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
+
+```
+
 ```
