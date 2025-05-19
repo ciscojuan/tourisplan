@@ -12,8 +12,8 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter, //primordial si queremos trabajar los usuarios con prima en la bd
   providers: [
     GithubProvider({
-      clientId: process.env.NOGITHUB_ID ?? "",
-      clientSecret: process.env.NOGITHUB_SECRET ?? "",
+      clientId: process.env.GITHUB_ID ?? "",
+      clientSecret: process.env.GITHUB_SECRET ?? "",
       allowDangerousEmailAccountLinking: true,
     }),
     GoogleProvider({
