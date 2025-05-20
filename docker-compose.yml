@@ -1,9 +1,26 @@
 version: "3.8"
+
 services:
-  postgres:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/tourisplan
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=your-secret-key
+      - NODE_ENV=development
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    command: sh -c "npx prisma generate && npm run dev"
+
+  db:
     image: postgres:14
-    container_name: tourisplan_postgres
-    restart: always
     ports:
       - "5432:5432"
     environment:
@@ -12,27 +29,11 @@ services:
       - POSTGRES_DB=tourisplan
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - tourisplan-network
-
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: tourisplan_app
-    restart: always
-    ports:
-      - "3000:3000"
-    # Las variables de entorno ahora se manejan a través de GitHub Secrets
-    # y se inyectan automáticamente durante el despliegue
-    depends_on:
-      - postgres
-    networks:
-      - tourisplan-network
-
-networks:
-  tourisplan-network:
-    driver: bridge
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:

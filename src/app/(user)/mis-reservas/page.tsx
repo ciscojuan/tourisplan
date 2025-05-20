@@ -1,97 +1,67 @@
-"use client";
-import PlaneImage from "@/components/PlaneImage";
-
-import { Plan, User } from "@prisma/client";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import prisma from "@/lib/prisma";
+import PlaneImage from "@/components/PlaneImage";
+import Link from "next/link";
 import { IoArrowForwardOutline } from "react-icons/io5";
 
-interface Reserva {
-  id: string;
-  fecha: string;
-  plan: Plan;
-  user: User;
-  hora: string;
-  servicio: string;
-  estado: string;
-}
+export default async function MisReservasPage() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) {
+    redirect("/api/auth/signin");
+  }
 
-export default function ReservasPage() {
-  const session = useSession();
-  const [reservas, setReservas] = useState<Reserva[]>([]);
-  console.log(reservas);
-  useEffect(() => {
-    const fetchReservas = async () => {
-      try {
-        const response = await fetch("/api/reservas");
-        const data = await response.json();
-        setReservas(data);
-      } catch (error) {
-        console.error("Error fetching reservas:", error);
-      }
-    };
+  const reservas = await prisma.reserva.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      plan: true,
+    },
+  });
 
-    fetchReservas();
-  }, []);
-
-  if (!session) redirect("api/auth/signin");
-  console.log(reservas);
   return (
-    <div className=" justify-center items-center">
-      <h1 className="text-5xl text-center">Mis Reservas</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Mis Reservas</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {reservas.length > 0 ? (
           reservas.map((reserva) => (
             <div
               key={reserva.id}
-              className="flex flex-col items-center text-center max-w-sm  border border-amber-600 rounded-lg shadow-sm dark:bg-amber-600 p-8"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
             >
-              <div className="w-[200px] h-[200px] relative overflow-hidden rounded-lg">
-                <div className="mb-6">
-                  <PlaneImage
-                    src={
-                      reserva.plan.image &&
-                      reserva.plan.image.startsWith("http")
-                        ? reserva.plan.image
-                        : ""
-                    }
-                    alt={reserva.plan.nombre_plan}
-                    width={800}
-                    height={400}
-                  />
-                </div>
+              <div className="w-full h-48 relative overflow-hidden rounded-lg mb-4">
+                <PlaneImage
+                  src={
+                    reserva.plan.image && reserva.plan.image.startsWith("http")
+                      ? reserva.plan.image
+                      : ""
+                  }
+                  alt={reserva.plan.nombre_plan}
+                  width={800}
+                  height={400}
+                />
               </div>
-
-              <div className="p-5 flex flex-col items-center">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {reserva.plan.nombre_plan}
-                </h5>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  {reserva.plan.descripcion &&
-                  reserva.plan.descripcion.length > 100
-                    ? `${reserva.plan.descripcion.substring(0, 100)}...`
-                    : reserva.plan.descripcion || "Sin descripción disponible"}
-                </p>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  Nombre: {reserva.user.name}
-                </p>
-                <Link
-                  href={`/plan-turistico/${reserva.plan.id}`}
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-amber-600 focus:ring-4 focus:outline-none "
-                >
-                  Ver Plan Turistico
-                  <IoArrowForwardOutline className="ml-4" />
-                </Link>
-              </div>
+              <h2 className="text-xl font-semibold mb-2">
+                {reserva.plan.nombre_plan}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Estado: {reserva.estado}
+              </p>
+              <Link
+                href={`/plan-turistico/${reserva.plan.id}`}
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-amber-600 focus:ring-4 focus:outline-none"
+              >
+                Ver Plan Turístico
+                <IoArrowForwardOutline className="ml-2" />
+              </Link>
             </div>
           ))
         ) : (
-          <div className="flex w-full">
-            <h1 className="text-2xl text-center">
-              No has realizado ninguna Reserva
-            </h1>
+          <div className="col-span-full text-center">
+            <h2 className="text-2xl">No has realizado ninguna Reserva</h2>
           </div>
         )}
       </div>
