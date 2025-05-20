@@ -153,14 +153,10 @@ export default async function PlanTuristicopage({
         });
 
         revalidatePath("/mis-reservas");
-        redirect("/mis-reservas?success=true");
+        redirect("/mis-reservas");
       } catch (err) {
         console.error("Reservation creation failed:", err);
-        redirect(
-          `/plan-turistico/${id}?error=${encodeURIComponent(
-            err instanceof Error ? err.message : "Error al crear la reserva"
-          )}`
-        );
+        redirect("/mis-reservas");
       }
     }
 

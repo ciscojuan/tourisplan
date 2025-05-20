@@ -7,11 +7,7 @@ import PlaneImage from "@/components/PlaneImage";
 import Link from "next/link";
 import { IoArrowForwardOutline } from "react-icons/io5";
 
-interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export default async function MisReservasPage({ searchParams }: PageProps) {
+export default async function MisReservasPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     redirect("/api/auth/signin");
@@ -26,27 +22,8 @@ export default async function MisReservasPage({ searchParams }: PageProps) {
     },
   });
 
-  // Manejar searchParams de forma segura
-  const success =
-    typeof searchParams.success === "string"
-      ? searchParams.success === "true"
-      : false;
-  const error =
-    typeof searchParams.error === "string" ? searchParams.error : undefined;
-
   return (
     <div className="container mx-auto px-4 py-8">
-      {success && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-          ¡Reserva creada exitosamente!
-        </div>
-      )}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-          {decodeURIComponent(error)}
-        </div>
-      )}
-
       <h1 className="text-3xl font-bold mb-6">Mis Reservas</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {reservas.length > 0 ? (
