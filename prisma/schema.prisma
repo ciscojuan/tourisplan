@@ -88,7 +88,7 @@ model Authenticator {
 model Plan {
   id          String    @id @default(uuid())
   nombre_plan String
-  image       String
+  image       String?
   descripcion String? // Add description if available
   precio      Float? // Add price if relevant
   reservas    Reserva[]
