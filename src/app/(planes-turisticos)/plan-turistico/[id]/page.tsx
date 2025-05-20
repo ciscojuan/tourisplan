@@ -13,6 +13,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { getTturisticPlanById, getTuristicPlan } from "@/utils/queries";
 import PlaneImage from "@/components/PlaneImage";
 import { ButtonComponent } from "@/components";
+import ReservationForm from "@/components/ReservationForm";
 import { randomUUID } from "crypto";
 
 type PageParams = Promise<{ id: string }>;
@@ -130,7 +131,7 @@ export default async function PlanTuristicopage({
           typeof images[0] === "string" &&
           images[0].startsWith("http")
             ? images[0]
-            : "";
+            : null;
 
         // Crear el plan con el ID generado
         await prisma.plan.create({
@@ -152,10 +153,15 @@ export default async function PlanTuristicopage({
         });
 
         revalidatePath("/mis-reservas");
-        redirect("/mis-reservas");
+        // En vez de redirigir aquí, retornamos un objeto
+        return { success: true };
       } catch (err) {
         console.error("Reservation creation failed:", err);
-        throw err;
+        return {
+          success: false,
+          error:
+            err instanceof Error ? err.message : "Error al crear la reserva",
+        };
       }
     }
 
@@ -191,8 +197,6 @@ export default async function PlanTuristicopage({
             </p>
           </div>
 
-          {/* Use a form with action instead of onClick */}
-
           {!session ? (
             <ButtonComponent
               path="/api/auth/signin"
@@ -200,15 +204,7 @@ export default async function PlanTuristicopage({
               icon={<IoLogInSharp size={30} />}
             />
           ) : (
-            <form action={createPlan} className="mt-6">
-              <input type="hidden" name="planId" value={id} />
-              <button
-                type="submit"
-                className="p-4 text-center my-4 bg-amber-600 rounded-2xl text-white flex justify-evenly items-center gap-6 cursor-pointer transition-transform hover:scale-105 "
-              >
-                <IoBook size={30} /> Reserva
-              </button>
-            </form>
+            <ReservationForm createPlan={createPlan} />
           )}
         </div>
       </div>
