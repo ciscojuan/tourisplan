@@ -71,7 +71,7 @@ Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#co
 
 ### Configurar OAuth con GitHub
 
-Ver [wiki](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
+Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
 
 ### Variables de Entorno
 
