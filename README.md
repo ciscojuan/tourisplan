@@ -67,38 +67,11 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 
 #### Configurar OAuth con Google:
 
-1. Ve a [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
-2. Crea un nuevo proyecto o selecciona uno existente
-3. Ve a "Credentials" -> "Create Credentials" -> "OAuth Client ID"
-
-- 3.1 Configurar consentimiento
-  - configura nombre de la aplicacion, correo.
-  - configurar uso usuarios externos
-  - usuario de correo -> finalizar
-
-4. Ir a Crear cliente de OAuth, Configura:
-   - Application Type: Web Application
-   - Authorized redirect URI: http://localhost:3000/api/auth/callback/google **Importante**
-5. Google te proporcionará:
-   - Client ID
-   - Client Secret
-
-Copia las credenciales: **las necesitaremos mas adelante**
-GOOGLE_CLIENT_ID="tu-client-id"
-GOOGLE_SECRET="tu-google-secret" **Solo se generará la primera vez. Luego no se pdrá visualizar y tendra que generar otra secret.**
+Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
 
 ### Configurar OAuth con GitHub
 
-1. Ve a GitHub.com y accede a tu cuenta
-2. Ve a Settings -> Developer Settings -> OAuth Apps **panel de la izq**
-3. Haz clic en "New OAuth App"
-4. Configura la aplicación:
-   - Application Name: TourisPlan (o el nombre que prefieras)
-   - Homepage URL: http://localhost:3000
-   - Authorization callback URL: http://localhost:3000/api/auth/callback/github **Importante**
-5. GitHub te proporcionará:
-   - Client ID
-   - Client Secret **Solo se generará la primera vez. Luego no se podrá visualizar y tendra que generar otra secret.**
+Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
 
 ### Variables de Entorno
 
