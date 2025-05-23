@@ -112,7 +112,7 @@ npm install
 
 ```bash
 # Inicia el contenedor de PostgreSQL
-docker-compose up -d
+docker compose up -d
 ```
 
 4. **Configura Prisma y la base de datos**
