@@ -124,6 +124,21 @@ export default async function PlanTuristicopage({
         // Generar un ID único para el plan
         const planId = randomUUID();
 
+        // Verificar si el usuario ya tiene una reserva para este plan
+        const existingReservation = await prisma.reserva.findFirst({
+          where: {
+            userId: session.user.id as string,
+            plan: {
+              nombre_plan: name,
+            },
+          },
+        });
+
+        if (existingReservation) {
+          console.log("Ya existe una reserva para este usuario y este plan");
+          return; // No hacer nada más
+        }
+
         // Safely access image URL
         const imageUrl =
           images &&
