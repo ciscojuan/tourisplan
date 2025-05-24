@@ -1,5 +1,4 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { PlanTuristico } from "../interfaces";
 import { IoArrowForwardOutline } from "react-icons/io5";
@@ -14,6 +13,12 @@ interface Props {
 export const PTuristicoCard = ({ planTuristico, reserva }: Props) => {
   const { id, images, name, description } = planTuristico;
 
+  // Verificar si images existe y tiene elementos
+  const imageUrl =
+    images && images.length > 0 && images[0].startsWith("http")
+      ? images[0]
+      : "https://hips.hearstapps.com/hmg-prod/images/macchu-pichu-sunset-royalty-free-image-1663587235.jpg?crop=1xw:1xh;center,top&resize=980";
+
   return (
     <div
       key={id}
@@ -21,12 +26,7 @@ export const PTuristicoCard = ({ planTuristico, reserva }: Props) => {
     >
       <div className="w-[150px] h-[150px] relative overflow-hidden rounded-lg">
         <div className="mb-3">
-          <PlaneImage
-            src={images[0].startsWith("http") ? images[0] : ""}
-            alt={name}
-            width={800}
-            height={400}
-          />
+          <PlaneImage src={imageUrl} alt={name} width={800} height={400} />
         </div>
       </div>
 
