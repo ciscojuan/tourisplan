@@ -53,7 +53,7 @@ El proyecto se desarrolla siguiendo un enfoque ágil, con integración continua 
 - **CI/CD:** [GitHub Actions](https://github.com/features/actions)
 - **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
 
-## Pasos para correr el proyecto en desarrollo
+## Pasos para correr el proyecto
 
 Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 
@@ -62,36 +62,6 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 - [Node.js](https://nodejs.org/) (Versión LTS recomendada), `package.json`.
 - [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/products/docker-desktop/) y [Docker Compose](https://docs.docker.com/compose/install/) (Recomendado para un entorno consistente)
-
-### Creacion de credenciales para Autenticación OAuth para Google y GitHub Providers
-
-#### Configurar OAuth con Google:
-
-Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
-
-### Configurar OAuth con GitHub
-
-Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
-
-### Variables de Entorno
-
-Crea un archivo `.env` en la raíz del proyecto y configura las siguientes variables.
-
-```bash
-# Base de Datos
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
-
-# Autenticación (NextAuth.js)
-# Genera un secreto seguro con: openssl rand -hex 32
-NEXTAUTH_SECRET="TU_NEXTAUTH_SECRET_AQUI"
-
-# Configuración de Proveedores OAuth (si usas Google, GitHub, etc.)
-NOGITHUB_ID="***"
-NOGITHUB_SECRET=""
-
-GOOGLE_CLIENT_ID="***"
-GOOGLE_CLIENT_SECRET="***"
-```
 
 ### Instalación
 
@@ -102,75 +72,33 @@ git clone https://github.com/ciscojuan/tourisplan.git
 cd tourisplan
 ```
 
-2.  **Instala los módulos necesarios de node:**
+2. **Crea un archivo** `.env` en la raíz del proyecto y configura las siguientes variables.
 
 ```bash
-npm install
+# Base de Datos
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+# Autenticación (NextAuth.js)
+# Genera un secreto seguro con: openssl rand -hex 32
+NEXTAUTH_SECRET="TU_NEXTAUTH_SECRET_AQUI"
+
+# Configuración de Proveedores OAuth (si usas Google, GitHub, etc.)
+#Para crear las credenciales de google y github, Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
+NOGITHUB_ID="***"
+NOGITHUB_SECRET=""
+
+GOOGLE_CLIENT_ID="***"
+GOOGLE_CLIENT_SECRET="***"
 ```
 
-3. **Configura la base de datos Postgresql con Docker**
+3. ### Correr el proyecto
 
 ```bash
-# Inicia el contenedor de PostgreSQL
 docker-compose up -d
-```
-
-4. **Configura Prisma y la base de datos**
-
-```bash
-# Crea las tablas en la base de datos y genera el cliente de Prisma
-npx prisma migrate dev --name init
-```
-
-5. **generar el cliente**
-
-```bash
-npx prisma generate
-```
-
-### Ejecutar proyecto en desarrollo
-
-1. **Asegurarse de que el contenedor de PostgreSQL esta en ejecucion:**
-
-```bash
-docker-compose ps
-```
-
-2. **Inicia el servidor de desarrollo:**
-
-```bash
-npm run dev
 ```
 
 3. **Acceder a la Aplicación:**
    Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
-
-## Ejecutar con Docker
-
-### Construir y ejecutar con docker-compose
-
-Para ejecutar la aplicación completa (frontend y base de datos) con Docker Compose:
-
-1.  **Clona el repositorio:**
-
-```bash
-git clone https://github.com/ciscojuan/tourisplan.git
-cd tourisplan
-```
-
-```bash
-# Construir las imágenes y ejecutar los contenedores
-docker-compose up -d
-```
-
-### Aplicar migraciones de Prisma
-
-```bash
-docker exec tourisplan_app npx prisma migrate deploy
-```
-
-**Acceder a la Aplicación:**
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 
 ## CI/CD
 
