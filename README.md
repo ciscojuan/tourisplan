@@ -83,13 +83,15 @@ DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 NEXTAUTH_SECRET="TU_NEXTAUTH_SECRET_AQUI"
 
 # Configuración de Proveedores OAuth (si usas Google, GitHub, etc.)
-#Para crear las credenciales de google y github, Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
+
 NOGITHUB_ID="***"
 NOGITHUB_SECRET=""
 
 GOOGLE_CLIENT_ID="***"
 GOOGLE_CLIENT_SECRET="***"
 ```
+
+Para crear las credenciales OAuth de google y github, Ver [documentacion del proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
 
 3. ### Correr el proyecto
 
