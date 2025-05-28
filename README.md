@@ -7,15 +7,13 @@ Aplicación web para la consulta y reserva de planes turísticos en Colombia, de
 
 ## Tabla de Contenido
 
-- [Descripción](#descripción)
-- [Características Principales](#características-principales)
-- [Stack Tecnológico](#stack-tecnológico)
-- [Empezando](#empezando)
+- [Descripción:](#descripción)
+- [Características Principales:](#características-principales)
+- [Stack Tecnológico:](#stack-tecnológico)
+- [Pasos para correr el proyecto:](#pasos-para-correr-el-proyecto)
   - [Pre-requisitos](#pre-requisitos)
   - [Instalación](#instalación)
-  - [Variables de Entorno](#variables-de-entorno)
-  - [Ejecutar en Desarrollo](#ejecutar-en-desarrollo)
-- [Ejecutar con Docker](#ejecutar-con-docker)
+  - [Ejecutar el Proyecto:](#correr-el-proyecto)
 - [Ejecutar Pruebas](#ejecutar-pruebas)
 - [Construcción para Producción](#construcción-para-producción)
 - [CI/CD](#cicd)
