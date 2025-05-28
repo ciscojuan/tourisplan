@@ -117,7 +117,7 @@ Este proyecto utiliza GitHub Actions para CI/CD. Los flujos de trabajo incluyen:
 ## Documentación Adicional
 
 - Documentacion del proyecto: arquitectura, seguridad, etc [Accede a la WIKI del Proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
-
+- Archivo SBOM (lista de materiales de software)
 - Video demostrativo de la aplicación
 
 ## Licencia
