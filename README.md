@@ -118,13 +118,9 @@ Este proyecto utiliza GitHub Actions para CI/CD. Los flujos de trabajo incluyen:
 
 - Documentacion del proyecto: arquitectura, seguridad, etc [Accede a la WIKI del Proyecto](https://github.com/ciscojuan/tourisplan/wiki#configuraci%C3%B3n-de-oauth)
 - Archivo SBOM (lista de materiales de software) [Ver archivo](https://github.com/ciscojuan/tourisplan/blob/develop/tourisplan-sbom.json)
-- Video demostrativo de la aplicación
 - Contenedor desde [DockerHub](https://hub.docker.com/repository/docker/jrami1519/tourisplan/general)
 
 ## Licencia
 
 Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
 
-```
-
-```
