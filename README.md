@@ -96,8 +96,11 @@ Para crear las credenciales OAuth de google y github, Ver [documentacion del pro
 ```bash
 docker-compose up -d
 ```
-
-3. **Acceder a la Aplicación:**
+4. ### Realizar migraciones:
+   ```bash
+   https://github.com/jaiderospina/DevSecOps2025/tree/main/ExamenFinal
+   ```
+5. **Acceder a la Aplicación:**
    Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 
 ## CI/CD
